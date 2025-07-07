@@ -1,0 +1,59 @@
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header">
+        <h3>Upload PDF Statement</h3>
+      </div>
+      <div class="card-body">
+        <p class="text-muted mb-4">
+          Upload a PDF bank statement or credit card statement to automatically extract transactions.
+          The system will attempt to categorize expenses based on the transaction descriptions.
+        </p>
+
+        <%= form_with model: @pdf_upload, local: true, html: { multipart: true } do |form| %>
+          <% if @pdf_upload.errors.any? %>
+            <div class="alert alert-danger">
+              <h4><%= pluralize(@pdf_upload.errors.count, "error") %> prohibited this PDF upload from being saved:</h4>
+              <ul>
+                <% @pdf_upload.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="mb-3">
+            <%= form.label :file, "Select PDF File", class: "form-label" %>
+            <%= form.file_field :file, class: "form-control", accept: ".pdf", required: true %>
+            <div class="form-text">
+              Supported formats: PDF only. Maximum file size: 10MB.
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <%= link_to "Back to Uploads", pdf_uploads_path, class: "btn btn-secondary" %>
+            <%= form.submit "Upload and Process", class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <div class="card-header">
+        <h5>Supported PDF Formats</h5>
+      </div>
+      <div class="card-body">
+        <ul class="list-unstyled">
+          <li>✓ Bank statements</li>
+          <li>✓ Credit card statements</li>
+          <li>✓ Financial reports</li>
+          <li>✓ Any PDF with transaction data</li>
+        </ul>
+        <p class="text-muted">
+          <strong>Note:</strong> The system uses pattern matching to extract transaction data.
+          Results may vary depending on the PDF format and layout.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
