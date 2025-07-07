@@ -1,0 +1,57 @@
+<%= form_with model: transaction, local: true do |form| %>
+  <% if transaction.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(transaction.errors.count, "error") %> prohibited this transaction from being saved:</h4>
+      <ul>
+        <% transaction.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="mb-3">
+        <%= form.label :description, "Description", class: "form-label" %>
+        <%= form.text_field :description, class: "form-control", required: true %>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="mb-3">
+        <%= form.label :amount, "Amount", class: "form-label" %>
+        <%= form.number_field :amount, step: 0.01, class: "form-control", required: true %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="mb-3">
+        <%= form.label :transaction_type, "Type", class: "form-label" %>
+        <%= form.select :transaction_type,
+            options_for_select([['Income', 'income'], ['Expense', 'expense']], transaction.transaction_type),
+            {}, class: "form-select", required: true %>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="mb-3">
+        <%= form.label :date, "Date", class: "form-label" %>
+        <%= form.date_field :date, class: "form-control", required: true %>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="mb-3">
+        <%= form.label :category_id, "Category", class: "form-label" %>
+        <%= form.select :category_id,
+            options_for_select([['No Category', '']] + current_user.categories.map { |c| [c.name, c.id] }, transaction.category_id),
+            {}, class: "form-select" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between">
+    <%= link_to "Back", transactions_path, class: "btn btn-secondary" %>
+    <%= form.submit class: "btn btn-primary" %>
+  </div>
+<% end %>

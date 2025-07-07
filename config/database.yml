@@ -16,8 +16,7 @@ default: &default
   username: <%= ENV.fetch("DB_USERNAME", "root") %>
   password: <%= ENV.fetch("DB_PASSWORD", "")  %>
   host: <%= ENV.fetch("DB_HOST", "localhost")  %>
-  socket: /var/run/mysqld/mysqld.sock
-  
+
 
 development:
   <<: *default
@@ -54,6 +53,6 @@ test:
 production:
   <<: *default
   database: personal_budget_helper_production
-  username: <%= ENV.fetch("DB_USERNAME") %>
-  password: <%= ENV.fetch("DB_PASSWORD") %>
-  host: <%= ENV.fetch("DB_HOST") %>
+  username: <%= ENV.fetch("DB_USERNAME", "root") %>
+  password: <%= ENV.fetch("DB_PASSWORD", "") %>
+  host: <%= ENV.fetch("DB_HOST", "localhost") %>
